@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stateoflocnation.com/schemas/instrument.schema.json",
+  "title": "SOLN Governance Instrument",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "record_class", "status", "authority_status", "issuing_body", "access", "summary"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^SOLN-[A-Z]{3}-[0-9]{4}-[0-9]{4}$" },
+    "title": { "type": "string", "minLength": 3 },
+    "record_class": { "type": "string", "minLength": 3 },
+    "status": { "type": "string", "minLength": 3 },
+    "authority_status": { "type": "string", "minLength": 3 },
+    "issuing_body": { "type": "string", "minLength": 2 },
+    "date_published": { "type": ["string", "null"], "format": "date" },
+    "effective_date": { "type": ["string", "null"], "format": "date" },
+    "access": { "enum": ["public", "restricted", "sealed", "internal"] },
+    "public_source": { "type": ["string", "null"] },
+    "summary": { "type": "string", "minLength": 10 },
+    "subjects": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "notes": { "type": "string" },
+    "amends": { "type": "array", "items": { "type": "string", "pattern": "^SOLN-[A-Z]{3}-[0-9]{4}-[0-9]{4}$" } },
+    "supersedes": { "type": ["string", "null"], "pattern": "^SOLN-[A-Z]{3}-[0-9]{4}-[0-9]{4}$" },
+    "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+  }
+}

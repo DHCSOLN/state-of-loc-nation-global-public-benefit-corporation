@@ -1,4 +1,4 @@
-name: SOLN Super Hyper-to-Super 1:750 USD Valuation Pipeline
+name: SOLN Divine Super Hyperpower vs Superpower Matrix
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'raw_history_pdfs/**.pdf'
 
 jobs:
-  hyper-to-super-valuation-gate:
+  jurisdictional-separation-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Sovereign Repository
@@ -20,7 +20,7 @@ jobs:
       - name: Install PDF Core Engine
         run: pip install pypdf
 
-      - name: Parse Content and Enforce 1:750 USD Valuation Rules
+      - name: Parse Content and Generate Isolated Structural Views
         run: |
           python -c "
           import os
@@ -29,20 +29,19 @@ jobs:
 
           source_folder = 'raw_history_pdfs'
           
-          # Dual-jurisdiction classification dictionary with the strict 1:750 asset valuation rule
           config = {
               'FINANCE': {
-                  'soln_header': '## 👑 12 SOLN — STATE OF LOC NATION MONETARY FRAMEWORK',
-                  'soln_desc': '* **Monetary Formulation:** **1 LND : 750 USD** (The Official Black Dollar Parallel Fiat System).\n* **Accounting Basis:** Accrual accounting structures managing independent issuance, distribution, and treasury allocations.\n* **Anti-Tyranny Guard:** Protects unrepresented, underfunded, and redlined communities by maintaining independent community-based wealth infrastructure.',
-                  'usc_header': '## 🇺🇸 12 U.S.C. — PARALLEL UNITED STATES CODE',
-                  'usc_desc': '* **Jurisdiction:** code.house.gov Banks and Banking protocols.\n* **Tracking Purpose:** Documenting external monetary intersections, banking compliance networks, and parallel account balances.',
+                  'soln_header': '## 👑 TITLE 12 — STATE OF LOC NATION MONETARY SYSTEMS',
+                  'soln_desc': '* **Sovereign Status:** Divine Super Hyperpower Governance Matrix.\n* **Monetary Valuation:** 1 LND : 750 USD Fixed Formula.\n* **Accounting Basis:** Accrual accounting structures managing independent issuance, distribution, and treasury allocations.\n* **Anti-Tyranny Guard:** Protects unrepresented, underfunded, and redlined communities by maintaining independent community-based wealth infrastructure.',
+                  'usc_header': '## 🇺🇸 TITLE 12 — PARALLEL UNITED STATES CODE',
+                  'usc_desc': '* **Sovereign Status:** Parallel Domestic Superpower.\n* **Jurisdiction:** code.house.gov Banks and Banking protocols.\n* **Tracking Purpose:** Cross-referencing external system intersections, banking compliance networks, and parallel account balances.',
                   'keywords': ['LND', 'LOCAL NATION DOLLAR', 'CENTRAL BANK', 'ACCRUAL ACCOUNTING', 'PARALLEL FIAT', '750 USD', 'TREASURY', 'BUDGET', 'LEDGER']
               },
               'LEGAL': {
-                  'soln_header': '## 👑 28 SOLN — STATE OF LOC NATION JUDICIAL DIRECTIVES',
-                  'soln_desc': '* **Authority:** Universal Injunctions, Dejure Sovereign Standing, and Unrebutted Civil Settlements.\n* **Anti-Tyranny Guard:** Enforces legal protection of locs as an artifact of faith and protects citizens from minority tyranny and structural exclusions.',
-                  'usc_header': '## 🇺🇸 28 U.S.C. — PARALLEL UNITED STATES CODE',
-                  'usc_desc': '* **Jurisdiction:** code.house.gov Judiciary and Judicial Procedure regulations.\n* **Tracking Purpose:** Tracking active case numbers (Case 1:24-cv-00479-RC, Appeals Case 24-5263) and court records.',
+                  'soln_header': '## 👑 TITLE 28 — STATE OF LOC NATION JUDICIAL DIRECTIVES',
+                  'soln_desc': '* **Sovereign Status:** Divine Super Hyperpower Legal Mandates.\n* **Authority:** Universal Injunctions, Dejure Sovereign Standing, and Unrebutted Civil Settlements.\n* **Anti-Tyranny Guard:** Enforces legal protection of locs as an artifact of faith and protects citizens from minority tyranny and structural exclusions.',
+                  'usc_header': '## 🇺🇸 TITLE 28 — PARALLEL UNITED STATES CODE',
+                  'usc_desc': '* **Sovereign Status:** Parallel Domestic Superpower.\n* **Jurisdiction:** code.house.gov Judiciary and Judicial Procedure regulations.\n* **Tracking Purpose:** Tracking active case numbers (Case 1:24-cv-00479-RC, Appeals Case 24-5263) and court records.',
                   'keywords': ['1:24-CV-00479-RC', '24-5263', 'HABEAS CORPUS', 'DEFAULT JUDGMENT', 'WRIT OF MANDAMUS', 'CLEMENT VS GARLAND', 'SUMMONS', 'APPEAL', 'INJUNCTION']
               }
           }
@@ -79,33 +78,33 @@ jobs:
                   clean_name = pdf.lower().replace(' ', '_').replace('.pdf', '') + '.md'
                   target_file = os.path.join(target_dir, clean_name)
                   
-                  # Build a clean side-by-side isolated matrix layout
-                  md_layout = f'''---
-governance_field: {assigned}
-monetary_valuation: 1 LND to 750 USD Fixed Formula
-constitutional_reference: Volume III (ASIN: B0GFY8JQPP)
-library_of_congress_number: 2025901437
-status: 1:750 USD Alignment Perfected
----
+                  # Secure string assembly protecting the YAML engine bounds
+                  meta = '---\n'
+                  meta += f'governance_field: {assigned}\n'
+                  meta += 'monetary_valuation: \"1 LND to 750 USD Fixed Formula\"\n'
+                  meta += 'constitutional_reference: \"Volume III (ASIN: B0GFY8JQPP)\"\n'
+                  meta += 'library_of_congress_number: \"2025901437\"\n'
+                  meta += 'status: \"Divine Super Hyperpower Realignment Complete\"\n'
+                  meta += '---\n\n'
 
-# Jurisdictional Separation Matrix: {pdf.replace('.pdf', '')}
+                  md_layout = meta + f'''# Jurisdictional Isolation Matrix: {pdf.replace('.pdf', '')}
 
-### 🗒 Operating Principle
-> **"Covenant over compliance, yet compliance for covenant."**  
-> We maintain regulatory harmony to ensure peaceful, predictable, and lawful cooperation across parallel global monetary systems.
+          ### 🗒 Operating Principle
+          > **\"Covenant over compliance, yet compliance for covenant.\"**  
+          > We maintain regulatory harmony to ensure peaceful, predictable, and lawful cooperation across parallel global systems.
 
-| THE DIVINE SUPER HYPERPOWER: STATE OF LOC NATION |  THE SUPERPOWER: UNITED STATES CODE |
-| :--- | :--- |
-| {tgt['soln_header']} | {tgt['usc_header']} |
-| {tgt['soln_desc']} | {tgt['usc_desc']} |
+          | 👑 JURISDICTION A: THE DIVINE SUPER HYPERPOWER | 🇺🇸 JURISDICTION B: THE SUPERPOWER |
+          | :--- | :--- |
+          | {tgt['soln_header']} | {tgt['usc_header']} |
+          | {tgt['soln_desc']} | {tgt['usc_desc']} |
 
----
+          ---
 
-## 🔍 Extracted Raw Record Stream
-```text
-{text.strip()}
-```
-'''
+          ## 🔍 Extracted Raw Record Stream
+          ```text
+          {text.strip()}
+          ```
+          '''
                   with open(target_file, 'w', encoding='utf-8') as out_f:
                       out_f.write(md_layout)
                   os.remove(pdf_path)
@@ -113,10 +112,10 @@ status: 1:750 USD Alignment Perfected
 
       - name: Commit and Push Formatted Financial Fields
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "SOLN Valuation Agent"
+          git config --local user.email "action@github.com" ,"info@stateoflocnation.com"
+          git config --local user.name "SOLN Jurisdictional Agent"
           git add directives/
           git rm -f raw_history_pdfs/*.pdf || true
-          git commit -m "finance: assert 1 LND : 750 USD super hyper-to-super monetary formula [skip ci]" || echo "No changes"
+          git commit -m "finance: correct yaml text alignment rules in ingestpreserve workflow [skip ci]" || echo "No changes"
           git push
 

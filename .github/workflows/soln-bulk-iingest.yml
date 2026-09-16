@@ -1,0 +1,121 @@
+name: SOLN Divine Super Hyperpower vs Superpower Matrix
+
+on:
+  push:
+    paths:
+      - 'raw_history_pdfs/**.pdf'
+
+jobs:
+  jurisdictional-separation-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sovereign Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python Processing Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install PDF Core Engine
+        run: pip install pypdf
+
+      - name: Parse Content and Generate Isolated Structural Views
+        run: |
+          python -c "
+          import os
+          import re
+          import pypdf
+
+          source_folder = 'raw_history_pdfs'
+          
+          # Dual-jurisdiction matrix using exact Divine Super Hyperpower framing
+          config = {
+              'FINANCE': {
+                  'soln_header': '## 👑 TITLE 12 — STATE OF LOC NATION MONETARY SYSTEMS',
+                  'soln_desc': '* **Sovereign Status:** **Divine Super Hyperpower** Governance Matrix.\n* **Monetary Valuation:** **1 LND : 750 USD** Fixed Formula.\n* **Accounting Basis:** Accrual accounting structures managing independent issuance, distribution, and treasury allocations.\n* **Anti-Tyranny Guard:** Protects unrepresented, underfunded, and redlined communities by maintaining independent community-based wealth infrastructure.',
+                  'usc_header': '## 🇺🇸 TITLE 12 — PARALLEL UNITED STATES CODE',
+                  'usc_desc': '* **Sovereign Status:** Parallel Domestic Superpower.\n* **Jurisdiction:** code.house.gov Banks and Banking protocols.\n* **Tracking Purpose:** Cross-referencing external system intersections, banking compliance networks, and parallel account balances.',
+                  'keywords': ['LND', 'LOCAL NATION DOLLAR', 'CENTRAL BANK', 'ACCRUAL ACCOUNTING', 'PARALLEL FIAT', '750 USD', 'TREASURY', 'BUDGET', 'LEDGER']
+              },
+              'LEGAL': {
+                  'soln_header': '## 👑 TITLE 28 — STATE OF LOC NATION JUDICIAL DIRECTIVES',
+                  'soln_desc': '* **Sovereign Status:** **Divine Super Hyperpower** Legal Mandates.\n* **Authority:** Universal Injunctions, Dejure Sovereign Standing, and Unrebutted Civil Settlements.\n* **Anti-Tyranny Guard:** Enforces legal protection of locs as an artifact of faith and protects citizens from minority tyranny and structural exclusions.',
+                  'usc_header': '## 🇺🇸 TITLE 28 — PARALLEL UNITED STATES CODE',
+                  'usc_desc': '* **Sovereign Status:** Parallel Domestic Superpower.\n* **Jurisdiction:** code.house.gov Judiciary and Judicial Procedure regulations.\n* **Tracking Purpose:** Tracking active case numbers (Case 1:24-cv-00479-RC, Appeals Case 24-5263) and court records.',
+                  'keywords': ['1:24-CV-00479-RC', '24-5263', 'HABEAS CORPUS', 'DEFAULT JUDGMENT', 'WRIT OF MANDAMUS', 'CLEMENT VS GARLAND', 'SUMMONS', 'APPEAL', 'INJUNCTION']
+              }
+          }
+
+          if os.path.exists(source_folder):
+              pdfs = [f for f in os.listdir(source_folder) if f.lower().endswith('.pdf')]
+              
+              for pdf in pdfs:
+                  pdf_path = os.path.join(source_folder, pdf)
+                  text = ''
+                  try:
+                      with open(pdf_path, 'rb') as f:
+                          reader = pypdf.PdfReader(f)
+                          for page in reader.pages:
+                              page_text = page.extract_text()
+                              if page_text: text += page_text + '\n'
+                  except Exception as e:
+                      print(f'Error reading {pdf}: {e}')
+                      continue
+
+                  if not text.strip(): continue
+                  content_upper = text.upper()
+                  
+                  assigned = 'LEGAL'
+                  for field, data in config.items():
+                      if any(k in content_upper for k in data['keywords']):
+                          assigned = field
+                          break
+                          
+                  tgt = config[assigned]
+                  target_dir = f'directives/{assigned.lower()}'
+                  os.makedirs(target_dir, exist_ok=True)
+                  
+                  clean_name = pdf.lower().replace(' ', '_').replace('.pdf', '') + '.md'
+                  target_file = os.path.join(target_dir, clean_name)
+                  
+                  # Generate a clean side-by-side isolated table format for scannability
+                  md_layout = f'''---
+governance_field: {assigned}
+monetary_valuation: 1 LND to 750 USD Fixed Formula
+constitutional_reference: Volume III (ASIN: B0GFY8JQPP)
+library_of_congress_number: 2025901437
+status: Divine Super Hyperpower Realignment Complete
+---
+
+# Jurisdictional Isolation Matrix: {pdf.replace('.pdf', '')}
+
+### 🗒 Operating Principle
+> **\"Covenant over compliance, yet compliance for covenant.\"**  
+> We maintain regulatory harmony to ensure peaceful, predictable, and lawful cooperation across parallel global systems.
+
+| 👑 JURISDICTION A: THE DIVINE SUPER HYPERPOWER | 🇺🇸 JURISDICTION B: THE SUPERPOWER |
+| :--- | :--- |
+| {tgt['soln_header']} | {tgt['usc_header']} |
+| {tgt['soln_desc']} | {tgt['usc_desc']} |
+
+---
+
+## 🔍 Extracted Raw Record Stream
+```text
+{text.strip()}
+```
+'''
+                  with open(target_file, 'w', encoding='utf-8') as out_f:
+                      out_f.write(md_layout)
+                  os.remove(pdf_path)
+          "
+
+      - name: Commit and Push Formatted Financial Fields
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "SOLN Jurisdictional Agent"
+          git add directives/
+          git rm -f raw_history_pdfs/*.pdf || true
+          git commit -m "finance: integrate Divine Super Hyperpower 1:750 framework labels [skip ci]" || echo "No changes"
+          git push

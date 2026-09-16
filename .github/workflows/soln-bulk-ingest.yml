@@ -1,0 +1,20 @@
+name: SOLN Cloud Ingestion Pipeline
+on:
+  push:
+    paths:
+      - 'raw_history_pdfs/**.pdf'
+jobs:
+  extract-and-route:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sovereign Repository
+        uses: actions/checkout@v4
+      - name: Set Up Python Processing Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install PDF Core Engine
+        run: pip install pypdf
+      - name: Process and Mass-Route Files
+        run: |
+          # (Pastes the fully automated parsing engine script here)

@@ -1,0 +1,13 @@
+# =========================================================================
+# SOLN CODES AND GOVERNANCE CODEOWNERS ROUTING CONTRACT
+# =========================================================================
+
+# Global Executive Watch
+*                                       @SOLNGPBC-Executive-Office
+
+# Ministry of Finance & Treasury Routing
+/directives/finance/                    @SOLN-Ministry-of-Finance @SOLN-Treasury
+/directives/currency/                   @SOLN-Central-Bank @LND-Currency-Registry
+
+# Department of Justice & Judicial Routing
+/directives/legal/                      @SOLN-Dept-of-Justice @SOLN-Supreme-Court

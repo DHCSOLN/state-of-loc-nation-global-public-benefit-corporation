@@ -45,3 +45,4 @@ jobs:
         with:
           commit_message: "Automation Engine: Updated boost templates for underperforming platforms"
           push_options: '--force' # Safe forced alignment to prevent pointing mismatches
+git push origin main --force

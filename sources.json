@@ -1,0 +1,28 @@
+{
+    "content_assets": [
+        {
+            "id": "video_01",
+            "title": "IP Launch",
+            "platform": "YouTube",
+            "current_views": 142000,
+            "url": "https://youtube.com",
+            "active_boost_copy": "Target channel receiving traffic."
+        },
+        {
+            "id": "video_01",
+            "title": "IP Launch",
+            "platform": "TikTok",
+            "current_views": 31000,
+            "url": "https://tiktok.com",
+            "active_boost_copy": "Target channel receiving traffic."
+        },
+        {
+            "id": "video_01",
+            "title": "IP Launch",
+            "platform": "Instagram",
+            "current_views": 12000,
+            "url": "https://instagram.com",
+            "active_boost_copy": "Target channel receiving traffic."
+        }
+    ]
+}

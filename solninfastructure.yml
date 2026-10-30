@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# SOLN Institutional Infrastructure — discovery, scaffold, integration proposal, review, deployment
+# Run inside the existing SOLN repository. No production modifications without explicit approval.
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$ROOT"
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+OUT="ROOT/soln-infrastructure/STAMP"
+mkdir -p "OUT""ROOT/soln-infrastructure/blueprint"
+LOG="$OUT/execution.log"
+exec > >(tee -a "$LOG") 2>&1
+
+command -v git >/dev/null || { echo 'git is required'; exit 1; }
+command -v aws >/dev/null || { echo 'AWS CLI is required'; exit 1; }
+command -v python3 >/dev/null || { echo 'python3 is required'; exit 1; }
+
+printf 'SOLN | DISCOVER -> BUILD -> INTEGRATE -> VALIDATE -> REVIEW -> DEPLOY\n'
+printf 'Repository: %s\nReport: %s\n' "ROOT""OUT"
+
+# Discover only non-secret metadata. Do not collect environment files, credentials, or tokens.
+git remote -v > "$OUT/git-remotes.txt" || true
+git status --short > "$OUT/git-status.txt" || true
+find . -maxdepth 4 -type f -name'*stp*'-o-name'*pipeline*'-o-name'template.yaml'-o-name'serverless.yml'-o-name'cdk.json'-o-name'terraform.tf' -not -path './.git/*' > "$OUT/integration-candidates.txt"
+if aws sts get-caller-identity --query '{Account:Account,Arn:Arn}' --output json > "OUT/aws-identity.json"2>"OUT/aws-discovery-error.txt"; then
+  aws configure list-profiles > "$OUT/aws-profiles.txt" 2>/dev/null || true
+  aws resourcegroupstaggingapi get-resources --query 'ResourceTagMappingList[].{ARN:ResourceARN,Tags:Tags}' --output json > "OUT/aws-tagged-resources.json"2>>"OUT/aws-discovery-error.txt" || true
+else
+  echo 'AWS identity unavailable; discovery is incomplete.'
+fi
+
+# Create a declarative integration contract; do not guess existing STP interfaces.
+cat > "$ROOT/soln-infrastructure/blueprint/divisions.json" <<'JSON'
+{
+  "system": "SOLN Institutional Infrastructure Assurance Framework",
+  "divisions": [
+    {"id":"economic","functions":["treasury","LND ledger","procurement","economic development"]},
+    {"id":"protective","functions":["complaint intake","case tracking","legal referrals","accountability"]},
+    {"id":"research","functions":["publications","datasets","economic analysis","reporting"]},
+    {"id":"community","functions":["program registration","eligibility","housing","workforce","business support"]},
+    {"id":"governance","functions":["executive approvals","contracts","trust records","compliance","audit"]}
+  ],
+  "stp_stages": ["registration","verification","research_policy","governance_authorization","funding_validation","treasury_processing","program_execution","settlement_confirmation","reconciliation","audit","institutional_reporting"],
+  "controls": {"production_requires_executive_approval":true,"preserve_existing_ledgers":true,"financial_execution_disabled_by_default":true,"external_settlement_evidence_required":true}
+}
+JSON
+
+cat > "$ROOT/soln-infrastructure/blueprint/integration-map.json" <<'JSON'
+{
+  "status": "pending discovery and mapping",
+  "existing_stp_entrypoint": null,
+  "existing_stp_event_schema": null,
+  "existing_stp_authentication": null,
+  "existing_stp_deployment_workflow": null,
+  "integration_note": "Map and test actual interfaces before activating STP hooks. No live payment operations are authorized by this scaffold."
+}
+JSON
+
+python3 - "$ROOT/soln-infrastructure/blueprint/divisions.json" <<'PY'
+import json,sys
+x=json.load(open(sys.argv[1]))
+assert len(x['divisions']) == 5
+assert len(x['stp_stages']) == 11
+assert x['controls']['production_requires_executive_approval']
+print('Blueprint validation: PASS')
+PY
+
+cat > "$OUT/REVIEW.md" <<EOF2
+# SOLN Infrastructure Executive Review
+Generated: $STAMP
+
+## Completed
+- Repository metadata and available AWS tagged-resource discovery
+- Five-division blueprint scaffold
+- Eleven-stage STP contract and control requirements
+- Blueprint structural validation
+
+## Required before deployment
+- Map actual STP source files, APIs, schemas, authentication, and event routing
+- Implement missing services and connect existing services without duplicate systems
+- Run integration, security, and rollback tests in a nonproduction environment
+- Review change diff and obtain executive approval
+
+## Evidence
+- $OUT/integration-candidates.txt
+- $OUT/aws-tagged-resources.json (if discovery succeeded)
+- $ROOT/soln-infrastructure/blueprint/
+
+This script does not claim completed integration or production readiness.
+EOF2
+
+printf '\nDiscovery and blueprint scaffold complete. Review %s/REVIEW.md\n' "$OUT"
+printf 'No changes were made to production AWS resources.\n'
+
+# Deployment is intentionally a separate approved action, using the existing pipeline.
+if [[ "${SOLN_DEPLOY_APPROVED:-false}" == "true" ]]; then
+  if [[ -z "${SOLN_DEPLOY_COMMAND:-}" ]]; then
+    echo 'Approval flag set but SOLN_DEPLOY_COMMAND is missing. No deployment executed.'
+    exit 2
+  fi
+  printf 'Deployment requested; existing command: %s\n' "$SOLN_DEPLOY_COMMAND"
+  read -r -p 'Type DEPLOY to execute the existing deployment command: ' ANSWER
+  if [[ "$ANSWER" == 'DEPLOY' ]]; then
+    bash -lc "$SOLN_DEPLOY_COMMAND"
+  else
+    echo 'Deployment cancelled.'
+  fi
+fi
